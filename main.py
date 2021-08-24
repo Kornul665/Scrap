@@ -5,7 +5,8 @@ import lxml
 from bs4 import BeautifulSoup
 import time
 import random
-
+from datetime import datetime
+startTime = datetime.now()
 # url = "https://health-diet.ru/table_calorie/"
 #
 headers = {
@@ -129,3 +130,5 @@ for category_name, category_href in all_categories.items():
 
     print(f'Осталось итераций: {iteration_count}.')
     time.sleep(random.randrange(1, 4))
+
+print(datetime.now() - startTime)
