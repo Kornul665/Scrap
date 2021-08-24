@@ -38,4 +38,10 @@ import random
 
 with open('all_categories_dict.json') as f:
     all_categories = json.load(f)
-print(all_categories)
+
+for category_name, category_href in all_categories.items():
+    rep = [",", ", ", "-", " ", "'"]
+    for i in rep:
+        if i in category_name:
+            category_name = category_name.replace(i, '_')
+    print(category_name)
