@@ -64,8 +64,7 @@ for category_name, category_href in all_categories.items():
     if alert_block is not None:
         continue
 
-    table_head = soup.find(
-        class_='mzr-tc-group-table').find('tr').find_all('th')
+    table_head = soup.find(class_='mzr-tc-group-table').find('tr').find_all('th')
     product = table_head[0].text
     calories = table_head[1].text
     proteins = table_head[2].text
@@ -83,8 +82,9 @@ for category_name, category_href in all_categories.items():
                 carbohydrates
             )
         )
-    product_data = soup.find(
-        class_='mzr-tc-group-table').find('tbody').find_all('tr')
+    product_data = soup.find(class_='mzr-tc-group-table').find('tbody').find_all('tr')
+
+    product_info = []
     for i in product_data:
         product_tds = i.find_all('td')
 
@@ -93,6 +93,16 @@ for category_name, category_href in all_categories.items():
         proteins = product_tds[2].text
         fats = product_tds[3].text
         carbohydrates = product_tds[4].text
+
+        product_info.append(
+            {
+                'Title': title,
+                'Calories': calories,
+                'Proteins': proteins,
+                'Fats': fats,
+                'Carbohydrates': carbohydrates
+            }
+        )
 
         with open(f'data/{count}_{category_name}.csv', 'a', encoding='utf-8') as f:
             writer = csv.writer(f)
@@ -106,5 +116,16 @@ for category_name, category_href in all_categories.items():
                 )
             )
 
+    with open(f'data/{count}_{category_name}.json', 'a', encoding='utf-8') as f:
+        json.dump(product_info, f, indent=4, ensure_ascii=False)
+
     count += 1
-   
+    print(f'# Итерация - {count}. {category_name} записан...')
+    iteration_count -= 1
+
+    if iteration_count == 0:
+        print('Работа завершена.')
+        break
+
+    print(f'Осталось итераций: {iteration_count}.')
+    time.sleep(random.randrange(1, 4))
