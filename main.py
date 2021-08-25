@@ -40,7 +40,7 @@ with open('all_categories_dict.json') as f:
 
 iteration_count = int(len(all_categories)) - 1
 count = 0
-print(f"Всего итераций: {iteration_count}")
+print(f"Total iterations: {iteration_count}")
 for category_name, category_href in all_categories.items():
 
     rep = [",", ", ", "-", " ", "'"]
@@ -99,9 +99,13 @@ for category_name, category_href in all_categories.items():
 
         product_info.append(
             {
-            'Title': title,
+                'Title': title,
+                'Calories': calories,
+                'Proteins': proteins,
+                'Fats': fats,
+                'Carbohydrates': carbohydrates
             }
-            )
+        )
 
         with open(f'data/{count}_{category_name}.csv', 'a', encoding='utf-8') as f:
             writer = csv.writer(f)
@@ -114,12 +118,14 @@ for category_name, category_href in all_categories.items():
                     carbohydrates
                 )
             )
+    with open(f"data/{count}_{category_name}.json", "a", encoding="utf-8") as file:
+        json.dump(product_info, file, indent=4, ensure_ascii=False)
 
     count += 1
-    print(f'# Итерация - {count}. {category_name} записан...')
+    print(f'# Iteration: {count}. {category_name} recorded...')
     iteration_count -= 1
     if iteration_count == 0:
-        print('Работа завершена.')
+        print('Completed.')
         break
-    print(f'Осталось итераций: {iteration_count}.')
-    time.sleep(random.randrange(1, 4))
+    print(f'Iterations left: {iteration_count}.')
+    time.sleep(random.randrange(1, 3))
